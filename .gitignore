@@ -41,7 +41,11 @@ build/
 ### Mac OS ###
 .DS_Store
 
-/storage/
-/data/minio/storage/
-/data/cloudbeaver/storage/
-/data/user-db/storage/
+*/storage/*
+/data/minio/storage/*
+/data/cloudbeaver/storage/*
+/data/user-db/storage/*
+!/data/minio/storage/.gitkeep
+!/data/cloudbeaver/storage/.gitkeep
+!/data/user-db/storage/.gitkeep
+
