@@ -46,7 +46,7 @@
 ---
 #### Предисловие
 
-Уж извините, но предоставлять архив документации через Postman мне лень, так что взаимодействуйте c API через `Swagger Web Interface` (ниже представлены возможные Web Interfaces с User API) \
+Уж извините, но предоставлять архив документации через Postman мне лень, так что взаимодействуйте c API через [SWAGGER-DOCUMENTATION](http://localhost:9090/swagger-ui/index.html#/) \
 Также надеюсь все остальное вы сами уже установите: `Maven`, `Java SDK`, `docker`, `docker-compose plugin`
 
 #### Нюансы сборки проекта
