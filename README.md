@@ -61,28 +61,7 @@ git clone https://github.com/EosReign/telros_task.git
 ```bash
 mvn clean package
 ```
-   
-Затем третьим шагом прописываете команду дабы запустить Docker Cluster сервисов: 
-```bash
-docker compose up --build -d
-```
-
-
-Собственно всё. \
-Если желайте просмотреть логи, то я надеюсь вы знаете команду `docker logs -f [container_name]`, которая даст вам доступ к логам `IRT (In Real Time)`
-
----
-### Useful User URLs
-
-- [SWAGGER-DOCUMENTATION](http://localhost:9090/swagger-ui/index.html#/)
-- [CLOUD-BEAVER](http://localhost:9050/)
-- [MINIO-S3](http://localhost:5801/)
-
-**Ниже представлены параметры входа в контейнеры в .env-example**
-
----
-### Example Env
-
+Далее третьим шагом создайте файл в root проекта под именем `.env` с наполнением:
 ```.env
 # ------------- Course-DB -------------
 POSTGRES_USERNAME=root
@@ -98,3 +77,23 @@ JWT_KEY=qYR/0vnJPHl2IMuWrXw/A5KfiNCzeehS5xbvqaEHMDM=
 # -------------- Java API --------------
 SPRING_DOMAIN_NAME=http://localhost:9090
 ```
+   
+Затем четвертым шагом прописываете команду дабы запустить Docker Cluster сервисов: 
+```bash
+docker compose up --build -d
+```
+
+
+Собственно всё. \
+Если желайте просмотреть логи, то я надеюсь вы знаете команду `docker logs -f [container_name]`, которая даст вам доступ к логам `IRT (In Real Time)`
+
+---
+### Useful User URLs
+
+- [SWAGGER-DOCUMENTATION](http://localhost:9090/swagger-ui/index.html#/)
+- [CLOUD-BEAVER](http://localhost:9050/)
+- [MINIO-S3](http://localhost:5801/)
+
+**Для входа в сервисы используйте параметры из .env**
+
+
