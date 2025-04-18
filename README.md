@@ -55,7 +55,7 @@
 Так что первым шагом скачайте проект из репозитория github командой:
 
 ```bash
-git clone <URL>
+git clone https://github.com/EosReign/telros_task.git
 ```
 После чего вторым шагом пропишите команду сборки проекта:
 ```bash
