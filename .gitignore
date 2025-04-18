@@ -32,6 +32,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+!/data/minio/build/
+!/data/user-db/build/
+
 ### VS Code ###
 .vscode/
 
@@ -39,3 +42,6 @@ build/
 .DS_Store
 
 /storage/
+/data/minio/storage/
+/data/cloudbeaver/storage/
+/data/user-db/storage/
