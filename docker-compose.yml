@@ -1,0 +1,102 @@
+services:
+  cloud-beaver:
+    image: dbeaver/cloudbeaver:24.0
+    container_name: telros-dbeaver
+    ports:
+      - "9050:8978"
+    environment:
+      - TZ=Europe/Moscow
+      - CB_SERVER_NAME=CloudBeaver
+      - CB_SERVER_URL=http://localhost:9050
+      - CB_ADMIN_NAME=${CB_USER}
+      - CB_ADMIN_PASSWORD=${CB_PASSWORD}
+    volumes:
+      - ./../data/dbeaver/storage:/opt/cloudbeaver/workspace
+    restart: on-failure
+    #mem_limit: 96m  # Ограничение на использование памяти
+    #mem_reservation: 64m
+
+  user-service:
+    build: .
+    container_name: telros-user-service
+    ports:
+      - "9090:9090"
+    depends_on:
+      user-db:
+        condition: service_healthy
+    environment:
+      - TZ=Europe/Moscow
+      - MINIO_HOST=minio-s3
+      - MINIO_PORT=9000
+      - MINIO_PROTOCOL=http
+      - MINIO_ACCESS_KEY=${MINIO_USERNAME}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user-db:5432/user
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - TOKEN_SIGNING_KEY=${JWT_KEY}
+      - SPRING_DOMAIN_NAME=${SPRING_DOMAIN_NAME}
+      - JAVA_OPTS=-Xms64m -Xmx128 -XX:+UseG1GC
+    shm_size: 1gb
+    restart: on-failure
+    #mem_limit: 300m  # Ограничение на использование памяти
+
+  user-db:
+    build: data/user-db/build
+    container_name: telros-user-db
+    ports:
+      - "5600:5432"
+    volumes:
+      - /var/lib/postgresql/data/
+    environment:
+      - LANG=ru_RU.UTF-8
+      - LC_ALL=ru_RU.UTF-8
+      - LANGUAGE=ru_RU.UTF-8
+      - TZ=Europe/Moscow
+      - LANG=ru_RU.UTF-8
+      - LC_ALL=ru_RU.UTF-8
+      - LC_CTYPE=ru_RU.UTF-8
+      - POSTGRES_DB=user
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME} -d user || exit 1" ]
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    restart: on-failure
+    #mem_limit: 96m  # Ограничение на использование памяти
+    #mem_reservation: 64m  # Рекомендуемое количество памяти
+
+  minio-s3:
+    build:
+      context: data/minio/build
+      dockerfile: Dockerfile
+    container_name: telros-minio-s3
+    ports:
+      - "5800:9000"
+      - "5801:9001"
+    environment:
+      - TZ=Europe/Moscow
+      - MINIO_ROOT_USER=${MINIO_USERNAME}
+      - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD}
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: on-failure
+    #mem_limit: 128m  # Ограничение на использование памяти
+    #mem_reservation: 96m  #Рекомендуемое использование памяти
+
+volumes:
+  minio-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/minio/storage
