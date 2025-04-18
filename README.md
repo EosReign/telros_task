@@ -63,7 +63,7 @@ mvn clean package
 ```
 Далее третьим шагом создайте файл в root проекта под именем `.env` с наполнением:
 ```.env
-# ------------- Course-DB -------------
+# ------------- User-DB -------------
 POSTGRES_USERNAME=root
 POSTGRES_PASSWORD=root
 # ------------- CloudBeaver -------------
