@@ -46,10 +46,15 @@
 ---
 #### Предисловие
 
+---
+
 Уж извините, но предоставлять архив документации через Postman мне лень, так что взаимодействуйте c API через [SWAGGER-DOCUMENTATION](http://localhost:9090/swagger-ui/index.html#/) \
 Также надеюсь все остальное вы сами уже установите: `Maven`, `Java SDK`, `docker`, `docker-compose plugin`
 
+---
 #### Нюансы сборки проекта
+
+---
 
 Сначала бы стоит скачать себе проект. \
 Так что первым шагом скачайте проект из репозитория github командой:
@@ -90,10 +95,31 @@ docker compose up --build -d
 ---
 ### Useful User URLs
 
+---
+
 - [SWAGGER-DOCUMENTATION](http://localhost:9090/swagger-ui/index.html#/)
 - [CLOUD-BEAVER](http://localhost:9050/)
 - [MINIO-S3](http://localhost:5801/)
 
 **Для входа в сервисы используйте параметры из .env**
+
+---
+### How work with API?
+
+---
+
+**Есть 3 контроллера:**
+
+| Контроллер                   | Безопасность |
+|------------------------------|--------------|
+| auth-controller              | Non Secured  |
+| user-credential-controller   | Secured      |
+| user-info-controller         | Secured      |
+
+> Для начала регистрируетесь и затем логинитесь получая при этом AccessToken and RefreshToken.
+> Далее в Swagger WebInterface наверху справа есть кнопка `Authorize`.
+> Используйте её для авторизации с помощью AccessToken.
+> Ну и затем пользуйтесь всеми остальными эндпоинтами как хотите. Я сильно не запаривался над авторизацией, так что для получения списка пользователей `ROLE_ADMIN` без надобности.
+> Ну и валидации содержания полей сущностей тоже нет, так что как-то так.
 
 
